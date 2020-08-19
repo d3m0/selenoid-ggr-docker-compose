@@ -1,0 +1,44 @@
+version: "2.4"
+services:
+  selenoid:
+    network_mode: bridge
+    image: aerokube/selenoid:latest-release
+    command: ["-conf", "/etc/selenoid/browsers.json", "-limit", "10"]
+    ports:
+      - 4445:4444
+    volumes:
+      - "./config:/etc/selenoid"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+  selenoid-ui:
+    network_mode: bridge
+    image: aerokube/selenoid-ui:latest-release
+    command: ["--webdriver-uri", "http://ggr:4444", "--status-uri", "http://ggr-ui:8888"]
+    ports:
+      - 8090:8080
+    links:
+      - selenoid
+      - ggr-ui
+
+  ggr:
+    restart: always
+    image: aerokube/ggr:latest-release
+    ports:
+      - 4444:4444
+    volumes:
+      -  "/etc/grid-router/:/etc/grid-router:ro"
+
+  ggr-ui:
+    network_mode: bridge
+    restart: always
+    image: aerokube/ggr-ui:latest-release
+    ports:
+      - 8888:8888
+    volumes:
+      -  "/etc/grid-router/quota:/etc/grid-router/quota:ro"
+
+  chrome84:
+    image: selenoid/vnc:chrome_84.0
+
+  firefox79:
+    image: selenoid/vnc:firefox_79.0

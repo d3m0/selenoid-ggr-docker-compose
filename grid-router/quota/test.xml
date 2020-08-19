@@ -1,0 +1,16 @@
+<qa:browsers xmlns:qa="urn:config.gridrouter.qatools.ru">
+    <browser name="chrome" defaultVersion="84.0">
+        <version number="84.0">
+            <region name="cluster">
+                <host name="host.docker.internal" port="4445" count="10"></host>
+            </region>
+        </version>
+    </browser>
+    <browser name="firefox" defaultVersion="79.0">
+        <version number="79.0">
+            <region name="cluster">
+                <host name="host.docker.internal" port="4445" count="10"></host>
+            </region>
+        </version>
+    </browser>
+</qa:browsers>
